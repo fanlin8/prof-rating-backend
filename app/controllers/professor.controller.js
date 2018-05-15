@@ -10,7 +10,8 @@ exports.create = (req, res) => {
 
     // Create a Professor
     const professor = new Professor({
-        title: req.body.title || "Untitled Professor",
+        lastname: req.body.lastname,
+        firstname: req.body.firstname,
         classes: req.body.classes,
         evaluation: req.body.evaluation,
         rating: req.body.rating
@@ -63,7 +64,7 @@ exports.findOne = (req, res) => {
 
 // Update a professor identified by the professorId in the request
 exports.update = (req, res) => {
-    if (!req.body.content) {
+    if (!req.body) {
         return res.status(400).send({
             message: "Professor content can not be empty"
         });
@@ -71,7 +72,8 @@ exports.update = (req, res) => {
 
     // Find professor and update it with the request body
     Professor.findByIdAndUpdate(req.params.professorId, {
-        title: req.body.title || "Untitled Professor",
+        lastname: req.body.lastname,
+        firstname: req.body.firstname,
         classes: req.body.classes,
         evaluation: req.body.evaluation,
         rating: req.body.rating
