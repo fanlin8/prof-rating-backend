@@ -11,6 +11,7 @@ exports.create = (req, res) => {
     // Create a Professor
     const professor = new Professor({
         lastname: req.body.lastname,
+        middlename: req.body.middlename,
         firstname: req.body.firstname,
         classes: req.body.classes,
         evaluation: req.body.evaluation,
@@ -73,6 +74,7 @@ exports.update = (req, res) => {
     // Find professor and update it with the request body
     Professor.findByIdAndUpdate(req.params.professorId, {
         lastname: req.body.lastname,
+        middlename: req.body.middlename,
         firstname: req.body.firstname,
         classes: req.body.classes,
         evaluation: req.body.evaluation,
