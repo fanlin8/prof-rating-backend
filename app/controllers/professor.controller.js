@@ -10,11 +10,12 @@ exports.create = (req, res) => {
 
     // Create a Professor
     const professor = new Professor({
-        lastname: req.body.lastname,
-        middlename: req.body.middlename,
-        firstname: req.body.firstname,
-        classes: req.body.classes,
-        evaluation: req.body.evaluation,
+        lastName: req.body.lastName,
+        middleName: req.body.middleName || "",
+        firstName: req.body.firstName,
+        courses: req.body.courses,
+        evaluationOnsite: req.body.evaluationOnsite,
+        evaluationOnline: req.body.evaluationOnline,
         rating: req.body.rating
     });
 
@@ -73,11 +74,12 @@ exports.update = (req, res) => {
 
     // Find professor and update it with the request body
     Professor.findByIdAndUpdate(req.params.professorId, {
-        lastname: req.body.lastname,
-        middlename: req.body.middlename,
-        firstname: req.body.firstname,
-        classes: req.body.classes,
-        evaluation: req.body.evaluation,
+        lastName: req.body.lastName,
+        middleName: req.body.middleName || "",
+        firstName: req.body.firstName,
+        courses: req.body.courses,
+        evaluationOnsite: req.body.evaluationOnsite,
+        evaluationOnline: req.body.evaluationOnline,
         rating: req.body.rating
     }, { new: true })
         .then(professor => {

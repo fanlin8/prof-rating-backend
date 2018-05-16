@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 
 const ProfessorSchema = mongoose.Schema({
-    lastname: String,
-    middlename: String,
-    firstname: String,
-    classes:  [{
+    lastName: String,
+    middleName: String,
+    firstName: String,
+    courses:  [{
         type: String
     }],
-    evaluation: String,
+    evaluationOnsite: String,
+    evaluationOnline: String,
     rating: Number
 }, {
     timestamps: true
