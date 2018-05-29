@@ -1,3 +1,6 @@
 # dependencies
 /node_modules
 /.npm
+
+# environment variables
+variables.env
