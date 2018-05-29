@@ -1,4 +1,4 @@
-require('dotenv').config({ path: './variables.env' });
+require('dotenv').config({ path: __dirname + '/variables.env' });
 const mongoose = require("mongoose");
 
 const dbURI = process.env.DB_URI;
