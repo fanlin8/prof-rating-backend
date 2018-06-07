@@ -49,27 +49,38 @@ exports.register = (req, res) => {
     });
   }
 
-  const hashedPassword = bcrypt.hashSync(req.body.password, 10);
-
-  // Create a User
-  const user = new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: hashedPassword,
-  });
-
-  // Save User in the database
-  user.save()
-    .then(user => {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_KEY, {
-        expiresIn: 86400 // expires in 24 hours
+  User.findOne({ email: req.body.email }).then(user => {
+    if (user) {
+      return res.status(400).send({
+        message: "Email is already taken."
       });
-      res.status(200).send({ auth: true, token: token });
-    }).catch(err => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while registering the User."
-      });
+    };
+
+    console.log(req.body);
+
+    const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+
+    // Create a User
+    const newUser = new User({
+      username: req.body.username,
+      email: req.body.email,
+      password: hashedPassword,
+      roles: ['normal-user']
     });
+
+    // Save User in the database
+    newUser.save()
+      .then(user => {
+        const token = jwt.sign({ id: user._id }, process.env.JWT_KEY, {
+          expiresIn: 86400 // expires in 24 hours
+        });
+        res.status(200).send({ auth: true, token: token });
+      }).catch(err => {
+        res.status(500).send({
+          message: err.message || "Some error occurred while registering the User."
+        });
+      });
+  });
 };
 
 // Get info for current user
