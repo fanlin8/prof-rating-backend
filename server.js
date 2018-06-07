@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 });
 
 // Add headers
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
 
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -42,6 +42,8 @@ app.use(function (req, res, next) {
 
 // require Professors routes
 require('./app/routes/professor.routes.js')(app);
+// require authentication routes
+require('./app/routes/auth.routes.js')(app);
 
 // listen for requests
 app.listen(port, () => {

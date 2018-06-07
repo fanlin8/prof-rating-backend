@@ -2,10 +2,9 @@ require('dotenv').config({ path: __dirname + '/variables.env' });
 const mongoose = require("mongoose");
 
 const dbURI = process.env.DB_URI;
-console.log(process.env.PORT);
 
 const options = {
-  reconnectTries: 10,
+  reconnectTries: 20,
   poolSize: 10
 };
 
