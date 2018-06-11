@@ -1,4 +1,5 @@
 const Professor = require('../models/professor.model.js');
+const Course = require('../models/course.model.js');
 
 // Create and Save a new Professor
 exports.create = (req, res) => {
@@ -8,31 +9,47 @@ exports.create = (req, res) => {
     });
   }
 
-  // Create a Professor
-  const professor = new Professor({
-    lastName: req.body.lastName,
-    middleName: req.body.middleName || "",
-    firstName: req.body.firstName,
-    courses: req.body.courses,
-    evaluationOnsite: req.body.evaluationOnsite,
-    evaluationOnline: req.body.evaluationOnline,
-    rating: req.body.rating
-  });
+  // Get Courses
+  Course.find({
+    'course_code': { $in: req.body.course }
+  }, '_id').then(courses => {
+    // if (!courses) {
+    //   return res.status(404).send({
+    //     message: "Course not found."
+    //   });
+    // };
 
-  // Save Professor in the database
-  professor.save()
-    .then(data => {
-      res.send(data);
-    }).catch(err => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while creating the Professor."
+    Professor.findOne({ last_name: req.body.last_name, first_name: req.body.first_name, middle_name: req.body.middle_name || "" }).then(professor => {
+      if (professor) {
+        return res.status(400).send({
+          message: "Professor already exists."
+        });
+      };
+
+      // Create a Professor
+      const newProfessor = new Professor({
+        last_name: req.body.last_name,
+        middle_name: req.body.middle_name || "",
+        first_name: req.body.first_name,
+        course: [...courses]
       });
+
+      // Save Professor in the database
+      newProfessor.save()
+        .then(data => {
+          res.send(data);
+        }).catch(err => {
+          res.status(500).send({
+            message: err.message || "Some error occurred while creating the Professor."
+          });
+        });
     });
+  });
 };
 
 // Retrieve and return all professors from the database.
 exports.findAll = (req, res) => {
-  Professor.find()
+  Professor.find().populate('course')
     .then(professors => {
       res.send(professors);
     }).catch(err => {

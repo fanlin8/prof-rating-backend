@@ -56,8 +56,6 @@ exports.register = (req, res) => {
       });
     };
 
-    console.log(req.body);
-
     const hashedPassword = bcrypt.hashSync(req.body.password, 10);
 
     // Create a User

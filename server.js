@@ -40,10 +40,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// require Professors routes
-require('./app/routes/professor.routes.js')(app);
 // require authentication routes
 require('./app/routes/auth.routes.js')(app);
+// require Courses routes
+require('./app/routes/course.routes.js')(app);
+// require Professors routes
+require('./app/routes/professor.routes.js')(app);
+// require Reviews routes
+require('./app/routes/review.routes.js')(app);
 
 // listen for requests
 app.listen(port, () => {
