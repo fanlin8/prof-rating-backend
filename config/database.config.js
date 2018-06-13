@@ -15,3 +15,12 @@ mongoose.connect(dbURI, options)
   }).catch(err => {
     console.log('Could not connect to the database. Exiting now...', err);
   });
+mongoose.Promise = global.Promise;
+
+function close() {
+  mongoose.connection.close();
+}
+
+module.exports = {
+  close
+};
