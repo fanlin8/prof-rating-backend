@@ -49,7 +49,7 @@ exports.create = (req, res) => {
 
 // Retrieve and return all professors from the database.
 exports.findAll = (req, res) => {
-  Professor.find().populate('course')
+  Professor.find()
     .then(professors => {
       res.send(professors);
     }).catch(err => {
@@ -91,14 +91,10 @@ exports.update = (req, res) => {
 
   // Find professor and update it with the request body
   Professor.findByIdAndUpdate(req.params.professorId, {
-    lastName: req.body.lastName,
-    middleName: req.body.middleName || "",
-    firstName: req.body.firstName,
-    courses: req.body.courses,
-    evaluationOnsite: req.body.evaluationOnsite,
-    evaluationOnline: req.body.evaluationOnline,
-    rating: req.body.rating
-  }, { new: true })
+    last_name: req.body.last_name,
+    middle_name: req.body.middle_name || "",
+    first_name: req.body.first_name
+  }, { new: false })
     .then(professor => {
       if (!professor) {
         return res.status(404).send({

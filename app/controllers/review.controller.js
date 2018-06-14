@@ -11,7 +11,7 @@ exports.create = (req, res) => {
   }
 
   Promise.all([
-    User.findOne({ _id: req.body.creator }),
+    User.findOne({ _id: req.userId }),
     Professor.findOne({ _id: req.body.professor }),
     Course.findOne({ _id: req.body.course })
   ]).then(items => {
@@ -22,9 +22,8 @@ exports.create = (req, res) => {
       });
     }
 
-    // Create a Professor
     const newReview = new Review({
-      creator: req.body.creator,
+      creator: req.userId,
       professor: req.body.professor,
       course: req.body.course,
       review_onsite: req.body.review_onsite,
@@ -32,7 +31,6 @@ exports.create = (req, res) => {
       rating: req.body.rating
     });
 
-    // Save Professor in the database
     newReview.save()
       .then(data => {
         res.send(data);
@@ -41,7 +39,13 @@ exports.create = (req, res) => {
           message: err.message || "Some error occurred while creating the Review."
         });
       });
-  });
+  }).catch(err => {
+    res.status(500).send({
+      message: err.message || "Some error occurred while creating the Review."
+    });
+  }
+
+  );
 };
 
 exports.findAll = (req, res) => {
