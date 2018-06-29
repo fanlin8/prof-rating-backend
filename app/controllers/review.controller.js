@@ -49,12 +49,54 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  Review.find().populate('creator professor course')
+  Review.find()
     .then(reviews => {
       res.send(reviews);
     }).catch(err => {
       res.status(500).send({
         message: err.message || "Some error occurred while retrieving reviews."
+      });
+    });
+};
+
+exports.findByProfessorId = (req, res) => {
+  Review.find({professor: req.params.professorId})
+    .then(reviews => {
+      if (!reviews) {
+        return res.status(404).send({
+          message: "Reviews not found with professor id " + req.params.professorId
+        });
+      }
+      res.send(reviews);
+    }).catch(err => {
+      if (err.kind === 'ObjectId') {
+        return res.status(404).send({
+          message: "Reviews not found with professor id " + req.params.professorId
+        });
+      }
+      return res.status(500).send({
+        message: "Reviews not found with professor id " + req.params.professorId
+      });
+    });
+};
+
+exports.findByCourseId = (req, res) => {
+  Review.find({course: req.params.courseId})
+    .then(reviews => {
+      if (!reviews) {
+        return res.status(404).send({
+          message: "Reviews not found with course id " + req.params.courseId
+        });
+      }
+      res.send(reviews);
+    }).catch(err => {
+      if (err.kind === 'ObjectId') {
+        return res.status(404).send({
+          message: "Reviews not found with course id " + req.params.courseId
+        });
+      }
+      return res.status(500).send({
+        message: "Reviews not found with course id " + req.params.courseId
       });
     });
 };
