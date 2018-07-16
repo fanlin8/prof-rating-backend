@@ -19,6 +19,9 @@ app.get('/', (req, res) => {
   res.json({ "message": "Welcome to HU Rating application. This is a project based Angular framework." });
 });
 
+// temporarily disable server side caching
+app.disable('etag');
+
 // Add headers
 app.use((req, res, next) => {
 
