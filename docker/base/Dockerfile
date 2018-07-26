@@ -22,4 +22,4 @@ RUN apt-get update -y \
 
 EXPOSE 9090
 
-CMD ["node", "server.js"]
+CMD ["node", "prof-rating-backend/server.js"]
