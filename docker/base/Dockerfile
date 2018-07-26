@@ -1,4 +1,4 @@
-FROM node:8.11-jessie
+FROM node:8.11.3-slim
 
 LABEL author="Fan Lin<linfan0558@gmail.com>"
 
@@ -7,28 +7,17 @@ USER root
 ENV HOME=/usr/src/
 ENV SERVER=${HOME}/prof-rating-backend/
 
+ENV BUILD_PACKAGES="git"
+
 WORKDIR ${HOME}
 
-# Set proxy server
-# ENV http_proxy http://156.132.20.149:80
-# ENV https_proxy http://156.132.20.149:80
-
-# RUN npm config set strict-ssl false \
-#     && npm config set registry "http://registry.npmjs.org/" \
-#     && npm config set registry "http://registry.npmjs.org/" \
-#     && npm config set proxy http://156.132.20.149:80 \
-#     && npm config set https-proxy http://156.132.20.149:80 \
-#     && export HTTP_PROXY=http://156.132.20.149:80 \
-    # GIT pull
-    # && git config --global http.sslVerify false \
-RUN git clone https://github.com/fanlin8/prof-rating-backend.git
-
-# RUN git -C nextgen/ checkout feature/ATeam
-
-WORKDIR ${SERVER}
-
 # Build & Deploy
-RUN rm -rf node_modules \
+RUN apt-get update -y \
+    && apt-get install --no-install-recommends -y -q ${BUILD_PACKAGES} \
+    && git clone https://github.com/fanlin8/prof-rating-backend.git \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && apt-get remove --purge -y ${BUILD_PACKAGES} && apt-get autoremove -y \
+    && cd ${SERVER} && rm -rf node_modules \
     && npm install && npm cache clean --force && rm -rf ~/.npm
 
 EXPOSE 9090
