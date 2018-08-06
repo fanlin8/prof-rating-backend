@@ -18,6 +18,8 @@ RUN apk update \
     && cd ${SERVER} && rm -rf node_modules \
     && npm install && npm cache clean --force && rm -rf ~/.npm
 
+WORKDIR ${SERVER}
+
 EXPOSE 9090
 
-CMD ["node", "prof-rating-backend/server.js"]
+CMD node server.js
